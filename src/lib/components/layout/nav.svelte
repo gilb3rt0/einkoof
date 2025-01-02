@@ -9,7 +9,7 @@
 	});
 </script>
 
-<nav class="mb-10">
+<nav class="mb-10 w-fit lg:mx-auto">
 	<div class="lg:hidden">
 		<button class="lg:hidden" onclick={() => (menuOpen = !menuOpen)}>
 			<span class="sr-only"> toggle menu</span>

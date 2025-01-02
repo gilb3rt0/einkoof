@@ -18,6 +18,6 @@
 	bind:value
 	type="text"
 	aria-disabled={!!disabled}
-	class={`focus:outline-cyan-200, peer rounded-lg border-2 border-amber-100 text-slate-800 outline-2 outline-offset-2 ${error ? 'border-red-400 outline focus:border-red-400 focus:outline-red-400' : 'focus:border-cyan-800 focus:outline-cyan-800'} ${disabled ? 'bg-slate-200' : ''} ${className ?? ''}`}
+	class={`focus:outline-cyan-200, peer w-full rounded-lg border-2 border-amber-100 text-slate-800 outline-2 outline-offset-2 ${error ? 'border-red-400 outline focus:border-red-400 focus:outline-red-400' : 'focus:border-cyan-800 focus:outline-cyan-800'} ${disabled ? 'bg-slate-200' : ''} ${className ?? ''}`}
 	{...rest}
 />

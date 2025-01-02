@@ -34,7 +34,7 @@
 	use:enhance
 	method="POST"
 	action={action === 'register' ? '?/register' : '?/login'}
-	class="mt-6 flex w-full max-w-sm flex-col gap-4"
+	class="mt-6 flex max-w-sm flex-col gap-4"
 	novalidate
 >
 	<Switch

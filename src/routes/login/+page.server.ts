@@ -1,12 +1,12 @@
 import { psql } from '$lib/db/client';
 import { compareHash, generateHash } from '$lib/db/crypt';
+import { cookieOptions, generateSessionId } from '$lib/db/session';
+import type { User } from '$lib/db/types';
 import { fail, redirect, type Load } from '@sveltejs/kit';
 import { setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
 import type { Actions } from './$types';
-import type { User } from '$lib/db/types';
-import { generateSessionId } from '$lib/db/session';
 
 export const load: Load = async ({ params: { page } }) => {
 	const form = await superValidate(zod(registrationSchema));
@@ -69,7 +69,7 @@ export const actions = {
 
 		try {
 			const user = await psql<User[]>`
-			SELECT * FROM public."user"
+			SELECT * FROM users
 			WHERE
 			email = ${email}`;
 
@@ -125,7 +125,7 @@ export const actions = {
 		}
 		const hashedPassword = await generateHash(password);
 		try {
-			await psql`INSERT INTO public."user" (email, username, password, created_at) values (${email}, ${username}, ${hashedPassword}, NOW())`;
+			await psql`INSERT INTO users (email, username, password, created_at) values (${email}, ${username}, ${hashedPassword}, NOW())`;
 		} catch {
 			return fail(400, {
 				message: 'An error occurred'
@@ -133,7 +133,7 @@ export const actions = {
 		}
 		try {
 			const user = await psql<User[]>`
-			SELECT * FROM public."user"
+			SELECT * FROM users
 			WHERE 
 			email = ${email}`;
 			const sessionId = await generateSessionId(user[0].id);
@@ -144,16 +144,8 @@ export const actions = {
 				};
 			}
 
-			cookies.set('session_id', sessionId as string, {
-				path: '/',
-				secure: true,
-				httpOnly: true
-			});
-			cookies.set('user_id', String(user[0].id), {
-				path: '/',
-				secure: true,
-				httpOnly: true
-			});
+			cookies.set('session_id', sessionId as string, cookieOptions);
+			cookies.set('user_id', String(user[0].id), cookieOptions);
 		} catch (error) {
 			console.error(error);
 		}

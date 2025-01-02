@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Nav from '$lib/components/layout/nav.svelte';
 	import type { Snippet } from 'svelte';
 	import '../app.css';
 	import type { PageData } from './$types';
+	import { Nav } from '$lib';
 	let { children, data }: { children: Snippet; data: PageData } = $props();
 	const { isLoggedIn } = data;
 	const links = [
@@ -12,5 +12,9 @@
 	];
 </script>
 
-<Nav {links} />
-{@render children()}
+<main class="min-h-[100dvh] w-full bg-zinc-900 py-10 text-center font-mono text-yellow-100">
+	<Nav {links} />
+	<section class="mx-auto w-fit max-w-4xl p-2 text-left lg:p-0">
+		{@render children()}
+	</section>
+</main>
